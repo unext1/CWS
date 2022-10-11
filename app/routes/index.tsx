@@ -71,32 +71,32 @@ export interface AllCountries {
 
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
-  //   const limit = url.searchParams.get("limit");
+  const search = url.searchParams.get("search");
   let offset = Number(url.searchParams.get("offset")) || 0;
+  const apiUrl = "https://restcountries.com/v2/";
 
-  const countries = await fetch("https://restcountries.com/v2/all").then(
-    (response) => response.json().then((data) => data.slice(offset, 8 + offset))
+  let fetchURL = search
+    ? `${apiUrl}name/${search}?fields=name,flag`
+    : `${apiUrl}all?fields=name,flag`;
+
+  let countries = await fetch(fetchURL).then((response) =>
+    response.json().then((data) => {
+      if (data.status == "404") {
+        return;
+      } else {
+        return data.slice(offset, 8 + offset);
+      }
+    })
   );
 
   return json(
     { countries, offset },
     {
       headers: {
-        "Cache-Control": `public, max-age=${1000}, s-maxage=${1000 * 10}`,
+        "Cache-Control": `public, max-age=${10}, s-maxage=${10 * 10}`,
       },
     }
   );
-}
-
-import type { ActionArgs } from "@remix-run/node";
-export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-
-  const countries = await fetch(" https://restcountries.com/v3.1/name/ar").then(
-    (response) => response.json()
-  );
-
-  return countries;
 }
 
 const Index = () => {
@@ -105,39 +105,74 @@ const Index = () => {
     offset: any;
   }>();
 
+  console.log(countries);
+
   return (
     <div className="container px-6 pt-20 mx-auto">
-      <h1 className="py-10 text-3xl font-bold tracking-widest text-center text-white">
-        CWS
-      </h1>
-      <div className="grid grid-cols-4 gap-10">
-        {countries.map((i) => (
-          <div className="text-white duration-200 shadow-xl bg-white/5 max-w-smoverflow-hidden rounded-3xl hover:scale-105 hover:shadow-xl">
-            <Link to={`/${i.name}`}>
-              <img
-                src={
-                  i.name.toLowerCase() === "afghanistan"
-                    ? "https://cdn.britannica.com/40/5340-004-B25ED5CF/Flag-Afghanistan.jpg"
-                    : i.flag
-                }
-                alt="Flag not Found"
-                className="flex items-center justify-center object-cover w-full h-44 rounded-t-3xl"
-              />
-              <div className="p-8 pt-6 ">
-                <h1 className="text-lg font-semibold tracking-wider">
-                  {i.name}
-                </h1>
-                <p className="mb-5 text-medium">
-                  Well, aren't you going up to the lake tonight, you've been
-                  planning it for two weeks.
-                </p>
-                <button className="w-full py-2 duration-75 bg-brand-green hover:bg-brand-green/80 hover:shadow-xl rounded-3xl">
-                  See More
-                </button>
-              </div>
-            </Link>
+      <div className="flex justify-between w-full mb-10">
+        <h1 className="text-3xl font-bold tracking-widest text-white ">CWS</h1>
+        <Form action="">
+          <div className="relative ">
+            <input
+              type="text"
+              name="search"
+              id="search"
+              placeholder="Find A Country"
+              className="block w-full pl-0 pr-10 text-white bg-transparent border-0 border-b-2 border-brand-green focus:border-b-2 focus:border-brand-green ring-0 sm:text-sm focus:border-0 focus:ring-0"
+            />
+            <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+              <button
+                type="submit"
+                className="inline-flex items-center px-2 text-sm text-white "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-        ))}
+        </Form>
+      </div>
+      <div className="grid grid-cols-4 gap-10">
+        {countries
+          ? countries.map((i) => (
+              <div
+                className="text-white duration-200 shadow-xl bg-white/5 max-w-smoverflow-hidden rounded-3xl hover:scale-105 hover:shadow-xl"
+                key={i.name}
+              >
+                <Link to={`/${i.name}`}>
+                  <img
+                    src={i.flag}
+                    alt="Flag not Found"
+                    className="flex items-center justify-center object-cover w-full h-44 rounded-t-3xl"
+                  />
+                  <div className="p-8 pt-6 ">
+                    <h1 className="text-lg font-semibold tracking-wider">
+                      {i.name}
+                    </h1>
+                    <p className="mb-5 text-medium">
+                      Well, aren't you going up to the lake tonight, you've been
+                      planning it for two weeks.
+                    </p>
+                    <button className="w-full py-2 duration-75 bg-brand-green hover:bg-brand-green/80 hover:shadow-xl rounded-3xl">
+                      See More
+                    </button>
+                  </div>
+                </Link>
+              </div>
+            ))
+          : "Country not found"}
       </div>
       <div className="flex justify-between mt-10">
         <Link
@@ -154,40 +189,6 @@ const Index = () => {
           Next
         </Link>
       </div>
-      <Form action="/manomenulis" className="container mx-auto my-auto ">
-        <div>
-          <div>
-            <label
-              htmlFor="search"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Quick search
-            </label>
-            <div className="relative flex items-center mt-1">
-              <input
-                type="text"
-                name="search"
-                id="search"
-                placeholder=""
-                className="block w-full pr-12 text-white rounded-md shadow-sm bg-brand-dark-600 sm:text-sm placeholder:text-gray-400"
-              />
-              <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-                <button className="inline-flex items-center px-2 font-sans text-sm font-medium text-gray-400 border border-gray-200 rounded">
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <button
-            className="w-full p-2 mt-5 text-center bg-brand-main"
-            type="submit"
-          >
-            Pasirinkteti
-          </button>
-        </div>
-      </Form>
     </div>
   );
 };

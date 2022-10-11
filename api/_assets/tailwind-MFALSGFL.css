@@ -771,10 +771,6 @@ select {
   margin-right: 0.5rem;
 }
 
-.mb-20 {
-  margin-bottom: 5rem;
-}
-
 .block {
   display: block;
 }
@@ -1025,11 +1021,6 @@ select {
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
-}
-
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
 }
 
 .pt-20 {
