@@ -6044,6 +6044,11 @@ react-router@6.3.0:
   dependencies:
     history "^5.2.0"
 
+react-zorm@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-zorm/-/react-zorm-0.5.1.tgz#f89a3b5453048eed3a7bb726315211ddf27890be"
+  integrity sha512-p9CkAlUjRX1I3F9udEWbPf5VOmBFN2vANtp7uKZ9zUK2w4VmJRKP7nHb0B4WVJ1qMzNzAcQgpP6undfq6w/LnQ==
+
 react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
@@ -7452,6 +7457,11 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^3.19.1:
+  version "3.19.1"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.19.1.tgz#112f074a97b50bfc4772d4ad1576814bd8ac4473"
+  integrity sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==
 
 zwitch@^2.0.0:
   version "2.0.2"

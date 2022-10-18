@@ -1,5 +1,6 @@
 import { json, LoaderArgs } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
 
 export interface Flags {
   svg: string;
@@ -75,9 +76,7 @@ export async function loader({ request }: LoaderArgs) {
   let offset = Number(url.searchParams.get("offset")) || 0;
   const apiUrl = "https://restcountries.com/v2/";
 
-  let fetchURL = search
-    ? `${apiUrl}name/${search}?fields=name,flag`
-    : `${apiUrl}all?fields=name,flag`;
+  let fetchURL = search ? `${apiUrl}name/${search}` : `${apiUrl}all`;
 
   let countries = await fetch(fetchURL).then((response) =>
     response.json().then((data) => {
@@ -105,8 +104,6 @@ const Index = () => {
     offset: any;
   }>();
 
-  console.log(countries);
-
   return (
     <div className="container px-6 pt-20 mx-auto">
       <div className="flex justify-between w-full mb-10">
@@ -129,13 +126,13 @@ const Index = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="w-4 h-4"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
                   />
                 </svg>
@@ -176,14 +173,14 @@ const Index = () => {
       </div>
       <div className="flex justify-between mt-10">
         <Link
-          to={`?offset=${offset <= 0 ? offset : offset - 5}`}
+          to={`?offset=${offset <= 0 ? offset : offset - 8}`}
           className="inline-flex items-center px-5 py-2 text-base font-medium text-white transition-all duration-200 border border-transparent rounded-full shadow-sm bg-brand-green hover:bg-brand-green/80 focus:outline-none"
         >
           Prev
         </Link>
 
         <Link
-          to={`?offset=${offset + 5}`}
+          to={`?offset=${offset + 8}`}
           className="inline-flex items-center px-5 py-2 text-base font-medium text-white transition-all duration-200 border border-transparent rounded-full shadow-sm bg-brand-green hover:bg-brand-green/80 focus:outline-none"
         >
           Next

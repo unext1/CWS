@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
   useCatch,
 } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import Layout from "./components/Layout";
 
 import tailwindStyles from "./tailwind.css";
