@@ -1301,10 +1301,6 @@ select {
     display: grid;
   }
 
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:gap-x-16 {
     -moz-column-gap: 4rem;
          column-gap: 4rem;

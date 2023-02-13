@@ -141,7 +141,7 @@ const Index = () => {
           </div>
         </Form>
       </div>
-      <div className="grid grid-cols-4 gap-10">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-3 lg:grid-cols-4">
         {countries
           ? countries.map((i) => (
               <div
